@@ -127,6 +127,35 @@ To start CTIA locally, use `./scripts/run`.
 For a REPL workflow, run `lein repl`. Use `(start)` to start CTIA,
 `(stop)` to stop it, and `(go)` to restart it.
 
+### Deployment on Kubernetes.
+
+The `k8s` directory contains a Proof-of-concept set of Kubernetes resources to deploy CTIA on Kubernetes.
+These resources were adapted from `containers/dev/docker-compose.yml`.
+
+#### Deploying
+
+The resources are stored under logical filenames, in file glob order.  
+Assuming you have `kubectl` installed and properly configured with access to your cluster, 
+you can deploy the full stack with the following command `kubectl apply -f k8s`.
+
+#### Accessing
+
+Per the limitations listed below, nothing is currently exposed outside of the cluster.  
+
+You can connect to the CTIA service by running the following command `kubectl port-forward service/ctia --namespace=ctia 3000:3000` and then accessing http://localhost:3000.
+
+#### Limitations
+
+This should be considered a POC of CTIA on Kubernetes.  
+
+* This implementation has NO persistance.  Data stored in Elasticsearch and Redis can be lost at any time. 
+    * When a target Kubernetes cluster is identified, the appropriate [PersistantVolumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) can be added.
+* All services are cluster internal only. 
+    * When more is known about the deployment environment, an appropriate [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) will be added.
+* There is no access control.
+* Kafka, Riemann, and Riemann-dash are currently not included, due to time constraints.
+* The keys stored in `k8s/02_secrets.yaml` are stored in git (both in `k8s` and `containers/...`) and should be considered compromised.
+
 ### Testing and CI
 
 All PRs must pass `lein test` with no fails for PRs to be accepted.

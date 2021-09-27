@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: elastic5
+  name: elastic5
+  namespace: ctia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elastic5
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: elastic5
+    spec:
+      containers:
+      - image: elasticsearch:5.6.9
+        name: elasticsearch
+        envFrom:
+        - configMapRef:
+            name: elastic5
+        ports:
+        - containerPort: 9200
+          name: client
+        - containerPort: 9300  # Not needed for single node deployment
+          name: peer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: elastic5
+  name: elastic5
+  namespace: ctia
+spec:
+  ports:
+  - name: elastic5-public
+    port: 9205
+    protocol: TCP
+    targetPort: client
+  - name: elastic5-internal
+    port: 9305
+    protocol: TCP
+    targetPort: peer
+  selector:
+    app: elastic5
+  type: ClusterIP
+
+# To Test:
+# kubectl port-forward service/elastic5 --namespace=ctia 9205:9205
+# http://localhost:9205/_cluster/health
