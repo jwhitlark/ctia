@@ -1,0 +1,191 @@
+apiVersion: v1
+data:
+  ctia.properties: |
+    # properties documentation: https://github.com/threatgrid/ctia/blob/master/doc/properties.org
+
+    ctia.auth.type=allow-all
+    ctia.auth.threatgrid.cache=true
+    ctia.auth.entities.scope=private-intel
+    ctia.auth.casebook.scope=casebook
+    ctia.auth.assets.scope=asset
+
+    ctia.access-control.min-tlp green
+    ctia.access-control.default-tlp green
+    ctia.access-control.max-record-visibility everyone
+
+    ctia.encryption.type=default
+    ctia.encryption.key.filepath=/usr/src/app/cert/ctia-encryption.key
+
+    ctia.http.enabled=true
+    ctia.http.port=3000
+    ctia.http.access-control-allow-origin=http://(localhost|127.0.0.1)(:\\d+)?
+    ctia.http.access-control-allow-methods=get,post,put,patch,delete
+
+    ctia.http.events.timeline.max-seconds=5
+    ctia.http.bundle.export.max-relationships=1000
+
+    ctia.http.jwt.enabled=true
+    ctia.http.jwt.public-key-path=/usr/src/app/cert/ctia-jwt.pub
+    ctia.http.jwt.local-storage-key=:iroh-auth-token
+    ctia.http.jwt.claim-prefix=https://schemas.cisco.com/iroh/identity/claims
+    ctia.http.min-threads=10
+    ctia.http.max-threads=100
+
+    ctia.http.rate-limit.enabled=false
+    ctia.http.rate-limit.key-prefix=ctia
+    ctia.http.rate-limit.limits.group.default=18000
+    ctia.http.rate-limit.redis.host=redis
+    ctia.http.rate-limit.redis.port=6379
+    ctia.http.rate-limit.redis.timeout-ms=1000
+
+    ctia.http.show.hostname=localhost
+    ctia.http.show.port=3000
+    ctia.http.show.protocol=http
+    ctia.http.bulk.max-size=2000
+
+    ctia.http.swagger.oauth2.enabled=true
+    ctia.http.swagger.oauth2.entry-key=oauth2
+    ctia.http.swagger.oauth2.scopes=casebook:read|Casebook Read capabilities,casebook:write|Casebook Write capabilities,casebook|Casebook Full Access,private-intel:read|Private intel Read capabilities,private-intel:write|Private intel Write capabilities,private-intel|Private Intel Full Access
+    ctia.http.swagger.oauth2.authorization-url=http://localhost:9001/iroh/oauth2/authorize
+    ctia.http.swagger.oauth2.token-url=http://localhost:9001/iroh/oauth2/token
+    ctia.http.swagger.oauth2.refresh-url=http://localhost:9001/iroh/oauth2/refresh
+    ctia.http.swagger.oauth2.flow=accessCode
+    ctia.http.swagger.oauth2.client-id=swagger
+    ctia.http.swagger.oauth2.app-name=swagger
+    ctia.http.swagger.oauth2.realm=blank
+
+    ctia.events.enabled=true
+    ctia.events.log=false
+
+    # Use ES for all Stores
+    ctia.store.es.default.host=elastic5
+    ctia.store.es.default.port=9205
+    #ctia.store.es.default.host=es-storage.int.iroh.site
+    #ctia.store.es.default.port=443
+    #ctia.store.es.default.protocol=https
+    ctia.store.es.default.indexname=ctia_default
+    ctia.store.es.default.replicas=1
+    ctia.store.es.default.refresh_interval=1s
+    ctia.store.es.default.default_operator=AND
+    ctia.store.es.default.shards=5
+    ctia.store.es.default.refresh=false
+    ctia.store.es.default.rollover.max_docs=10000000
+    ctia.store.es.default.aliased=true
+    ctia.store.es.default.version=5
+    ctia.store.es.default.update-mappings=false
+    ctia.store.es.default.update-settings=false
+
+    ctia.store.actor=es
+    ctia.store.asset=es
+    ctia.store.asset-mapping=es
+    ctia.store.asset-properties=es
+    ctia.store.attack-pattern=es
+    ctia.store.event=es
+    ctia.store.feedback=es
+    ctia.store.campaign=es
+    ctia.store.coa=es
+    ctia.store.data-table=es
+    ctia.store.identity=es
+    ctia.store.incident=es
+    ctia.store.indicator=es
+    ctia.store.investigation=es
+    ctia.store.judgement=es
+    ctia.store.malware=es
+    ctia.store.relationship=es
+    ctia.store.casebook=es
+    ctia.store.sighting=es
+    ctia.store.identity-assertion=es
+    ctia.store.target-record=es
+    ctia.store.tool=es
+    ctia.store.vulnerability=es
+    ctia.store.weakness=es
+    ctia.store.feed=es
+
+    ctia.store.es.actor.indexname=ctia_actor
+    ctia.store.es.asset.indexname=ctia_assets
+    ctia.store.es.asset-mapping.indexname=ctia_asset_mapping
+    ctia.store.es.asset-properties.indexname=ctia_asset_properties
+    ctia.store.es.attack-pattern.indexname=ctia_attack_pattern
+    ctia.store.es.campaign.indexname=ctia_campaign
+    ctia.store.es.coa.indexname=ctia_coa
+    ctia.store.es.event.indexname=ctia_event
+    ctia.store.es.data-table.indexname=ctia_data-table
+    ctia.store.es.feedback.indexname=ctia_feedback
+    ctia.store.es.identity.indexname=ctia_identities
+    ctia.store.es.incident.indexname=ctia_incident
+    ctia.store.es.indicator.indexname=ctia_indicator
+    ctia.store.es.investigation.indexname=ctia_investigation
+    ctia.store.es.judgement.indexname=ctia_judgement
+    ctia.store.es.malware.indexname=ctia_malware
+    ctia.store.es.relationship.indexname=ctia_relationship
+    ctia.store.es.casebook.indexname = ctia_casebook
+    ctia.store.es.sighting.indexname=ctia_sighting
+    ctia.store.es.identity-assertion.indexname=ctia_identity-assertion
+    ctia.store.es.target-record.indexname=ctia_target_record
+    ctia.store.es.tool.indexname=ctia_tool
+    ctia.store.es.vulnerability.indexname=ctia_vulnerability
+    ctia.store.es.weakness.indexname=ctia_weakness
+    ctia.store.es.feed.indexname=ctia_feeds
+
+    ctia.store.bundle-refresh=wait_for
+    ctia.store.bulk-refresh=false
+
+    ctia.hook.redis.enabled=true
+    ctia.hook.redis.host=redis
+    ctia.hook.redis.port=6379
+    ctia.hook.redis.channel-name=ctim-event-pubsub
+    ctia.hook.redis.timeout-ms=1000
+
+    ctia.hook.redismq.enabled=false
+    ctia.hook.redismq.host=redis
+    ctia.hook.redismq.port=6379
+    ctia.hook.redismq.queue-name=ctim-event-queue
+    ctia.hook.redismq.timeout-ms=1000
+    ctia.hook.redismq.max-depth=0
+
+    ctia.metrics.riemann.enabled=false
+    ctia.metrics.riemann.host=127.0.0.1
+    ctia.metrics.riemann.port=5555
+    ctia.metrics.riemann.interval-in-ms=1000 # every second
+    ctia.metrics.console.enabled=false
+    ctia.metrics.console.interval=60 # every minute
+    ctia.metrics.jmx.enabled=false
+
+    ctia.log.riemann.enabled=false
+    ctia.log.riemann.host=127.0.0.1
+    ctia.log.riemann.port=5555
+    ctia.log.riemann.interval-in-ms=1000 # every second
+    ctia.log.riemann.batch-size=10
+    ctia.log.riemann.service-prefix=Dev CTIA
+
+    ctia.migration.migration-id=migration-test
+    ctia.migration.prefix=1.2.0
+    ctia.migration.migrations=identity
+    ctia.migration.store-keys=malware,tool
+    ctia.migration.batch-size=100
+    ctia.migration.buffer-size=3
+
+    # migration properties
+    # see https://github.com/threatgrid/ctia/blob/master/doc/migration.md
+    ctia.migration.store.es.migration.indexname=ctia_migration
+
+    ctia.versions.config=local
+  log4j.properties: |
+    log.console.threshold=INFO
+    log4j.rootLogger=DEBUG, CONSOLE, STDOUT
+    log4j.logger.deng=INFO
+    log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+    log4j.appender.CONSOLE.threshold=${log.console.threshold}
+    log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+    log4j.appender.CONSOLE.layout.ConversionPattern=%d %p (%t) [%c] - %m%n
+
+    log4j.appender.STDOUT=org.apache.log4j.FileAppender
+    log4j.appender.STDOUT.append=false
+    log4j.appender.STDOUT.file=/tmp/test.log
+    log4j.appender.STDOUT.threshold=INFO
+    log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout
+    log4j.appender.STDOUT.layout.ConversionPattern=%d %p (%t) [%c] - %m%n
+kind: ConfigMap
+metadata:
+  name: ctia
+  namespace: ctia

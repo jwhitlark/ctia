@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ctia
+  name: ctia
+  namespace: ctia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ctia
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: ctia
+    spec:
+      containers:
+      - image: localhost:32000/ctia:1.1.2
+        name: ctia
+        volumeMounts:
+          - name: config
+            mountPath: /usr/src/app/resources
+          - name: certs
+            mountPath: /usr/src/app/cert
+        ports:
+          - containerPort: 3000
+            name: api
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      volumes:
+        - name: config
+          configMap:
+            name: ctia
+        - name: certs
+          secret:
+            secretName: ctia
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ctia
+  name: ctia
+  namespace: ctia
+spec:
+  ports:
+  - name: ctia
+    port: 3000
+    protocol: TCP
+    targetPort: api
+  selector:
+    app: ctia
+  type: ClusterIP
