@@ -142,7 +142,7 @@ you can deploy the full stack with the following command `kubectl apply -f k8s`.
 
 Per the limitations listed below, nothing is currently exposed outside of the cluster.  
 
-You can connect to the CTIA service by running the following command `kubectl port-forward service/ctia --namespace=ctia 3000:3000` and then accessing http://localhost:3000.
+You can connect to the CTIA service by running the following command `kubectl port-forward service/ctia --namespace=ctia 3000:3000` and then accessing http://localhost:3000.  Note that skaffold will handle this automatically, see the next section.
 
 #### REPL driven development inside Kubernetes
 
