@@ -1,0 +1,20 @@
+FROM clojure:openjdk-17-lein-2.9.6-slim-buster
+
+RUN apt-get update && apt-get install -y git
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY project.clj /usr/src/app
+
+COPY src /usr/src/app/src
+COPY dev /usr/src/app/dev
+COPY resources /usr/src/app/resources
+COPY dev-resources /usr/src/app/dev-resources
+
+RUN lein deps
+
+CMD ["lein", "repl", ":headless", ":host", "127.0.0.1", ":port", "7888" ] 
+
+EXPOSE 3000 
+EXPOSE 7888 
