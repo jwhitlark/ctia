@@ -144,6 +144,31 @@ Per the limitations listed below, nothing is currently exposed outside of the cl
 
 You can connect to the CTIA service by running the following command `kubectl port-forward service/ctia --namespace=ctia 3000:3000` and then accessing http://localhost:3000.
 
+#### REPL driven development inside Kubernetes
+
+[Skaffold](https://skaffold.dev/) is a google authored tool to accellerate development on Kubernetes.
+It enables fast environment creation/cleanup, as well as an interactive REPL experience.
+
+When run in dev mode, skaffold will do the following:
+
+* Build a fresh image of ctia (if necessary).
+* Deploy all the resources in `k8s` to the cluster.
+* Forward all services to the local machine.
+* Watch non-clj and non-trivial files for changes, rebuilding and redeploying the image as needed.
+   * To enable the REPL, Clojure source code is not watched (this is configured in skaffold.yaml).
+   * Files that do not go into the image are ignored.
+* When the skaffold process is interrupted via `ctrl-c`, skaffold will remove all the resources from the cluster.
+
+The command to run skaffold in this scenario is:
+
+```
+skaffold dev --port-forward
+```
+
+And once it settles, you can connect to the nrepl server forwarded to `localhost:7888`, eval `(start)`, and you'll have a fresh development
+environment that can scale if needed and is easy to clean up.
+
+
 #### Limitations
 
 This should be considered a POC of CTIA on Kubernetes.  

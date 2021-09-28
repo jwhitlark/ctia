@@ -17,7 +17,7 @@ spec:
         app: ctia
     spec:
       containers:
-      - image: localhost:32000/ctia:1.1.2
+      - image: localhost:32000/ctia:1.1.7
         name: ctia
         volumeMounts:
           - name: config
@@ -27,6 +27,8 @@ spec:
         ports:
           - containerPort: 3000
             name: api
+          - containerPort: 7888
+            name: repl
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       volumes:
@@ -50,6 +52,10 @@ spec:
     port: 3000
     protocol: TCP
     targetPort: api
+  - name: ctia-repl
+    port: 7888
+    protocol: TCP
+    targetPort: repl
   selector:
     app: ctia
   type: ClusterIP

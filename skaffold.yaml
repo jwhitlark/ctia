@@ -1,0 +1,47 @@
+apiVersion: skaffold/v2beta23
+kind: Config
+metadata:
+  name: ctia
+
+build:
+  insecureRegistries:
+    - localhost
+    - localhost:32000
+  artifacts:
+  - image: localhost:32000/ctia
+    docker:
+      dockerfile: Dockerfile.dev
+
+deploy:
+  kubectl:
+    manifests:
+    - k8s/0*
+    flags:
+      global: ["--insecure-skip-tls-verify"]
+  kubeContext: microk8s
+
+profiles:
+  - name: dev
+    build:
+      insecureRegistries:
+      - localhost
+      - localhost:32000
+      artifacts:
+      - image: localhost:32000/ctia
+        docker:
+          dockerfile: Dockerfile.dev
+        ## Comment out to Disable sync while testing restart behavior
+        sync:
+          manual:
+          - src: src/**/*.clj
+            dest: .
+          - src: dev/**/*.clj
+            dest: .
+
+    deploy:
+      kubectl:
+        manifests:
+          - k8s/0*
+        flags:
+          global: ["--insecure-skip-tls-verify"]
+      kubeContext: microk8s
