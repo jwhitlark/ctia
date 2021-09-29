@@ -12,9 +12,9 @@ COPY dev /usr/src/app/dev
 COPY resources /usr/src/app/resources
 COPY dev-resources /usr/src/app/dev-resources
 
-RUN lein deps
+RUN lein with-profile k8s,dev deps
 
-CMD ["lein", "repl", ":headless", ":host", "127.0.0.1", ":port", "7888" ] 
+CMD ["lein", "with-profile", "k8s,dev", "repl", ":headless", ":host", "127.0.0.1", ":port", "7888" ] 
 
 EXPOSE 3000 
 EXPOSE 7888 

@@ -183,6 +183,8 @@
                    :pedantic? :warn
                    :resource-paths ["test/resources"]
                    :source-paths ["dev"]}
+             :k8s {:repl-options {:init-ns user
+                                  :init (start)}}
              :ci {:pedantic? :abort
                   :global-vars {*warn-on-reflection* true}}
              :next-clojure {:dependencies [[org.clojure/clojure "1.10.2-rc1"]]}

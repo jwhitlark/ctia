@@ -29,6 +29,17 @@ spec:
             name: api
           - containerPort: 7888
             name: repl
+        startupProbe:
+          httpGet:
+            path: /
+            port: api
+          periodSeconds: 10
+          failureThreshold:  12
+        livenessProbe:
+          httpGet:
+            path: /
+            port: api
+          periodSeconds: 5
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       volumes:
