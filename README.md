@@ -162,11 +162,13 @@ When run in dev mode, skaffold will do the following:
 The command to run skaffold in this scenario is:
 
 ```
-skaffold dev --port-forward
+skaffold dev --port-forward --trigger=manual
 ```
 
-And once it settles, you can connect to the nrepl server forwarded to `localhost:7888`, eval `(start)`, and you'll have a fresh development
-environment that can scale if needed and is easy to clean up.
+And once it settles, you can connect to the nrepl server forwarded to `localhost:7888`, and you'll have a fresh development
+environment that can scale if needed and is easy to clean up.  Note that with the addition of a startup probe and liveness checks,
+`(start)` is now called automatically, as Kubernetes will recycle the CTIA container if it doesn't repond to a HTTP GET on "/" within
+a certain time frame.  To trigger a refresh of the environment, press return when you terminal running skaffold has focus.
 
 
 #### Limitations
